@@ -40,7 +40,6 @@ public class JsonReader {
     }
 
     /*public static void main(String[] args) throws IOException, JSONException {
-        JSONObject json = readJsonFromUrl("http://infoshareacademycom.2find.ru/api/v2?lang=polish");
-        System.out.println(json.toString());
+
     }*/
 }
