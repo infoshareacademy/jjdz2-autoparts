@@ -3,11 +3,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * Created by pwieczorek on 29.08.16.
  */
 public class MainApplication {
+
+
 
     private static String linkMain = "http://infoshareacademycom.2find.ru";
     private static JsonReader jrd;
@@ -18,12 +22,34 @@ public class MainApplication {
         //JSONObject json = jrd.readJsonFromUrl("http://infoshareacademycom.2find.ru/api/v2?lang=polish");
         JSONObject json = jrd.readJsonFromUrl(linkMain +"/api/v2?lang=polish");
 
-        JSONArray jarr = json.getJSONArray("data");
+        HashMap<String, Brand> brandMap = new HashMap<>();
 
-        System.out.println(jarr.toString());
+        JSONArray jArr = json.getJSONArray("data");
 
-        //String text_strony = json.toString();
+        Brand brand1 = new Brand();
 
-        //System.out.println("");
+
+        for (int i = 0; i < jArr.length(); i++) {
+
+            JSONObject jsonObject = jArr.getJSONObject(i);
+            brandMap.put(jsonObject.getString("name"),new Brand(jsonObject.getString("name"),jsonObject.getString("id"),jsonObject.getString("name_clear"),
+            jsonObject.getString("link"),jsonObject.getBoolean("has_image")));
+        }
+        String inputName = new String("Nic");
+
+        System.out.println("Podaj markę:");
+        Scanner odczyt = new Scanner(System.in);
+
+        inputName = odczyt.nextLine();
+
+        if(brandMap.containsKey(inputName.toUpperCase())) {
+            brand1 = brandMap.get(inputName.toUpperCase());
+        } else {
+            System.out.println("Podałeś złą markę!");
+        }
+
+        System.out.println(brand1.toString());
+
+
     }
 }
