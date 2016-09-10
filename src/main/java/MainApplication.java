@@ -35,12 +35,12 @@ public class MainApplication {
             brandMap.put(jsonObject.getString("name"),new Brand(jsonObject.getString("name"),jsonObject.getString("id"),jsonObject.getString("name_clear"),
             jsonObject.getString("link"),jsonObject.getBoolean("has_image")));
         }
-        String inputName = new String("Nic");
+        /*String inputName = new String("Nic");*/
 
         System.out.println("Podaj markę:");
         Scanner odczyt = new Scanner(System.in);
 
-        inputName = odczyt.nextLine();
+        String inputName = odczyt.nextLine();
 
         if(brandMap.containsKey(inputName.toUpperCase())) {
             brand1 = brandMap.get(inputName.toUpperCase());
@@ -67,6 +67,10 @@ public class MainApplication {
 
         for(String newString : keyString) {
             System.out.println(modelMap.get(newString).getName());
+
+            String modelName = odczyt.nextLine();
+
+
         }
 
 
