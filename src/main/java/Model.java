@@ -45,14 +45,30 @@ public class Model {
     }
 
     public Model(String id, String name, String end_year, String end_month, String start_year, String start_month, String vehicle_group, String link) {
-        this.id = id;
-        this.name = name;
-        this.end_year = end_year;
-        this.end_month = end_month;
-        this.start_year = start_year;
-        this.start_month = start_month;
-        this.vehicle_group = vehicle_group;
-        this.link = link;
+        if(id != null) {
+            this.id = id;
+        }
+        if(name != null) {
+            this.name = name;
+        }
+        if(end_year != null) {
+            this.end_year = end_year;
+        }
+        if(end_month != null) {
+            this.end_month = end_month;
+        }
+        if(start_year != null) {
+            this.start_year = start_year;
+        }
+        if(start_month != null) {
+            this.start_month = start_month;
+        }
+        if(vehicle_group != null) {
+            this.vehicle_group = vehicle_group;
+        }
+        if(link != null) {
+            this.link = link;
+        }
     }
 
     public Model() {

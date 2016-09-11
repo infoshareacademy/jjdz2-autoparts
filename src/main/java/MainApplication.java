@@ -46,6 +46,7 @@ public class MainApplication {
             brand1 = brandMap.get(inputName.toUpperCase());
         } else {
             System.out.println("Podałeś złą markę!");
+            System.exit(1);
         }
 
         JSONObject jsonBrand = jrd.readJsonFromUrl(LINK_MAIN + brand1.getLink());
@@ -57,8 +58,10 @@ public class MainApplication {
         for (int i=0; i<jArr.length(); i++) {
 
             JSONObject jsonObject = jArr.getJSONObject(i);
-            modelMap.put(jsonObject.getString("name"),new Model(jsonObject.getString("id"),jsonObject.getString("name"),jsonObject.getString("end_year"),
-                    jsonObject.getString("end_month"),jsonObject.getString("start_year"),jsonObject.getString("start_month"),jsonObject.getString("vehicle_group"),
+
+
+            modelMap.put(jsonObject.getString("name"),new Model(jsonObject.getString("id"),jsonObject.getString("name"),jsonObject.get("end_year").toString(),
+                    jsonObject.get("end_month").toString(),jsonObject.getString("start_year"),jsonObject.getString("start_month"),jsonObject.getString("vehicle_group"),
                     jsonObject.getString("link")));
         }
 
@@ -67,11 +70,11 @@ public class MainApplication {
 
         for(String newString : keyString) {
             System.out.println(modelMap.get(newString).getName());
-
+        }
             String modelName = odczyt.nextLine();
 
 
-        }
+
 
 
 
