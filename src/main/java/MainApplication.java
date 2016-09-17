@@ -22,19 +22,28 @@ public class MainApplication {
         //JSONObject json = jrd.readJsonFromUrl("http://infoshareacademycom.2find.ru/api/v2?lang=polish");
         JSONObject json = jrd.readJsonFromUrl(LINK_MAIN + LINK_BRAND);
 
-        HashMap<String, Brand> brandMap = new HashMap<>();
+        Map<String, Brand> brandMap = new HashMap<>();
 
         JSONArray jArr = json.getJSONArray("data");
 
         Brand brand1 = new Brand();
+        //Model
 
 
         for (int i = 0; i < jArr.length(); i++) {
 
             JSONObject jsonObject = jArr.getJSONObject(i);
-            brandMap.put(jsonObject.getString("name"),new Brand(jsonObject.getString("name"),jsonObject.getString("id"),jsonObject.getString("name_clear"),
-            jsonObject.getString("link"),jsonObject.getBoolean("has_image")));
+            if(jsonObject != null) {
+                brandMap.put(jsonObject.getString("name"), new Brand(jsonObject.getString("name"), jsonObject.getString("id"), jsonObject.getString("name_clear"),
+                        jsonObject.getString("link"), jsonObject.getBoolean("has_image")));
+            } else {
+                System.out.println("Brak danych w bazie!");
+                System.exit(1);
+            }
+
+
         }
+        System.out.println(brandMap.keySet());
         /*String inputName = new String("Nic");*/
 
         System.out.println("Podaj markę:");
@@ -56,13 +65,13 @@ public class MainApplication {
         jArr = jsonBrand.getJSONArray("data");
 
         for (int i=0; i<jArr.length(); i++) {
-
             JSONObject jsonObject = jArr.getJSONObject(i);
 
-
-            modelMap.put(jsonObject.getString("name"),new Model(jsonObject.getString("id"),jsonObject.getString("name"),jsonObject.get("end_year").toString(),
-                    jsonObject.get("end_month").toString(),jsonObject.getString("start_year"),jsonObject.getString("start_month"),jsonObject.getString("vehicle_group"),
-                    jsonObject.getString("link")));
+            if (jsonObject != null) {
+                modelMap.put(jsonObject.getString("name"),new Model(jsonObject.getString("id"),jsonObject.getString("name"),jsonObject.get("end_year").toString(),
+                        jsonObject.get("end_month").toString(),jsonObject.getString("start_year"),jsonObject.getString("start_month"),jsonObject.getString("vehicle_group"),
+                        jsonObject.getString("link")));
+            }
         }
 
         System.out.println("Wybierz model:");
@@ -72,6 +81,13 @@ public class MainApplication {
             System.out.println(modelMap.get(newString).getName());
         }
             String modelName = odczyt.nextLine();
+
+        if(brandMap.containsKey(inputName.toUpperCase())) {
+            brand1 = brandMap.get(inputName.toUpperCase());
+        } else {
+            System.out.println("Podałeś zły model!");
+            System.exit(1);
+        }
 
 
 
