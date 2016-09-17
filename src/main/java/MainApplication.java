@@ -16,53 +16,70 @@ public class MainApplication {
     private static final String LINK_BRAND = "/api/v2?lang=polish";
     private static JsonReader jrd;
 
+    private static TreeMap<String,Brand> getBrandMap(String link) throws IOException {
 
-    public static void main(String[] args) throws IOException, JSONException {
-
-        //JSONObject json = jrd.readJsonFromUrl("http://infoshareacademycom.2find.ru/api/v2?lang=polish");
-        JSONObject json = jrd.readJsonFromUrl(LINK_MAIN + LINK_BRAND);
-
-        Map<String, Brand> brandMap = new HashMap<>();
-
+        JSONObject json = jrd.readJsonFromUrl(link);
+        TreeMap<String, Brand> brandMap = new TreeMap<String,Brand>();
         JSONArray jArr = json.getJSONArray("data");
-
-        Brand brand1 = new Brand();
-        //Model
-
 
         for (int i = 0; i < jArr.length(); i++) {
 
             JSONObject jsonObject = jArr.getJSONObject(i);
             if(jsonObject != null) {
-                brandMap.put(jsonObject.getString("name"), new Brand(jsonObject.getString("name"), jsonObject.getString("id"), jsonObject.getString("name_clear"),
-                        jsonObject.getString("link"), jsonObject.getBoolean("has_image")));
+
+                brandMap.put(jsonObject.getString("name"),new Brand(jsonObject));
             } else {
                 System.out.println("Brak danych w bazie!");
                 System.exit(1);
             }
-
-
         }
-        System.out.println(brandMap.keySet());
-        /*String inputName = new String("Nic");*/
+        return brandMap;
+    }
+
+    private static Brand getBrand(String inputName, TreeMap<String,Brand> brandMap) {
+        Brand brand = new Brand();
+        if(brandMap.containsKey(inputName.toUpperCase())) {
+           brand = brandMap.get(inputName.toUpperCase());
+        } else {
+            System.out.println("Podałeś złą markę!");
+            System.exit(1);
+        }
+        return brand;
+    }
+
+/*    private static TreeMap<String,Model> getModelMap(String link) {
+
+    }*/
+
+
+    public static void main(String[] args) throws IOException, JSONException {
+
+
+
+        TreeMap<String,Brand> brandMap = getBrandMap(LINK_MAIN+LINK_BRAND);
+
+        //System.out.println(brandMap.keySet());
+
 
         System.out.println("Podaj markę:");
         Scanner odczyt = new Scanner(System.in);
 
         String inputName = odczyt.nextLine();
 
-        if(brandMap.containsKey(inputName.toUpperCase())) {
-            brand1 = brandMap.get(inputName.toUpperCase());
+/*        if(brandMap.containsKey(inputName.toUpperCase())) {
+            brand = brandMap.get(inputName.toUpperCase());
         } else {
             System.out.println("Podałeś złą markę!");
             System.exit(1);
-        }
+        }*/
 
-        JSONObject jsonBrand = jrd.readJsonFromUrl(LINK_MAIN + brand1.getLink());
+        Brand brand = getBrand(inputName,brandMap);
 
-        HashMap<String,Model> modelMap = new HashMap<>();
+        JSONObject jsonBrand = jrd.readJsonFromUrl(LINK_MAIN + brand.getLink());
 
-        jArr = jsonBrand.getJSONArray("data");
+        TreeMap<String,Model> modelMap = new TreeMap<>();
+
+        JSONArray jArr = jsonBrand.getJSONArray("data");
 
         for (int i=0; i<jArr.length(); i++) {
             JSONObject jsonObject = jArr.getJSONObject(i);
@@ -83,13 +100,11 @@ public class MainApplication {
             String modelName = odczyt.nextLine();
 
         if(brandMap.containsKey(inputName.toUpperCase())) {
-            brand1 = brandMap.get(inputName.toUpperCase());
+            brand = brandMap.get(inputName.toUpperCase());
         } else {
             System.out.println("Podałeś zły model!");
             System.exit(1);
         }
-
-
 
 
 

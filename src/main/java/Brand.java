@@ -1,3 +1,7 @@
+import org.json.JSONObject;
+
+import java.util.Set;
+
 /**
  * Created by pwieczorek on 04.09.16.
  */
@@ -55,6 +59,44 @@ public class Brand {
         this.name_clear = null;
         this.link = null;
         this.has_image = false;
+    }
+
+    public Brand(JSONObject jObj) {
+        Set<String> stringSet = jObj.keySet();
+        if(stringSet.contains("name")) {
+            this.name = jObj.getString("name");
+        }
+        else {
+            this.name=null;
+        }
+
+        if(stringSet.contains("id")) {
+            this.id = jObj.getString("id");
+        }
+        else {
+            this.id=null;
+        }
+
+        if(stringSet.contains("name_clear")) {
+            this.name_clear = jObj.getString("name_clear");
+        }
+        else {
+            this.name_clear=null;
+        }
+
+        if(stringSet.contains("link")) {
+            this.link = jObj.getString("link");
+        }
+        else {
+            this.link=null;
+        }
+
+        if(stringSet.contains("has_image")) {
+            this.has_image = jObj.getBoolean("has_image");
+        }
+        else {
+            this.has_image=false;
+        }
     }
 
     @Override
