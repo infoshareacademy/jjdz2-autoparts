@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.Calendar;
 
 /**
  * Created by pwieczorek on 29.08.16.
@@ -15,6 +16,8 @@ public class MainApplication {
     private static final String LINK_MAIN = "http://infoshareacademycom.2find.ru";
     private static final String LINK_BRAND = "/api/v2?lang=polish";
     private static JsonReader jrd;
+
+    static Calendar calendar = Calendar.getInstance();
 
     private static TreeMap<String,Brand> getBrandMap(String link) throws IOException {
 
@@ -54,27 +57,41 @@ public class MainApplication {
         TreeMap<String, Model> modelMap = new TreeMap<>();
 
         JSONArray jArr = jsonBrand.getJSONArray("data");
+        if(jArr.length() !=0) {
+            for (int i = 0; i < jArr.length(); i++) {
+                JSONObject jsonObject = jArr.getJSONObject(i);
 
-        for (int i=0; i<jArr.length(); i++) {
-            JSONObject jsonObject = jArr.getJSONObject(i);
-
-            if (jsonObject != null) {
-                modelMap.put(jsonObject.getString("start_year"),new Model(jsonObject.getString("id"),jsonObject.getString("name"),jsonObject.get("end_year").toString(),
-                        jsonObject.get("end_month").toString(),jsonObject.getString("start_year"),jsonObject.getString("start_month"),jsonObject.getString("vehicle_group"),
-                        jsonObject.getString("link")));
+                if (jsonObject != null) {
+                    modelMap.put(jsonObject.get("start_year").toString(), new Model(jsonObject.getString("id"), jsonObject.getString("name"), jsonObject.get("end_year").toString(),
+                            jsonObject.get("end_month").toString(), jsonObject.get("start_year").toString(), jsonObject.get("start_month").toString(), jsonObject.getString("vehicle_group"),
+                            jsonObject.getString("link")));
+                }
             }
+        } else
+        {
+            System.out.println("Baza danych jest pusta!");
+            System.exit(1);
         }
         return modelMap;
     }
 
     private static TreeMap<String,Model> getModelMapByYear(TreeMap<String,Model> modelMap, String year) {
         TreeMap<String,Model> modelMapByYear = new TreeMap<>();
-        Integer yearInt = Integer.parseInt(year);
+        Integer yearInt = 0;
+        if(year.length() == 4) {
+            yearInt = Integer.parseInt(year);
+        } else {
+            System.out.println("Podałeś zły rok!");
+            System.exit(1);
+        }
 
         for(String s : modelMap.keySet()) {
             Integer startYear = Integer.parseInt(modelMap.get(s).getStart_year());
-            Integer endYear = Integer.parseInt(modelMap.get(s).getEnd_year());
+            Integer endYear=calendar.get(Calendar.YEAR);
 
+            if(modelMap.get(s).getEnd_year() != "null") {
+                endYear = Integer.parseInt(modelMap.get(s).getEnd_year());
+            }
             if(yearInt >= startYear && yearInt <= endYear) {
                 modelMapByYear.put(modelMap.get(s).getId(),modelMap.get(s));
             }
@@ -92,6 +109,7 @@ public class MainApplication {
         Scanner odczyt = new Scanner(System.in);
         Brand brand = new Brand();
 
+
         do {
             System.out.println("Podaj markę:");
             String inputName = odczyt.nextLine();
@@ -103,8 +121,20 @@ public class MainApplication {
 
         System.out.println("Podaj rok produkcji:");
 
+        String inputYear = odczyt.nextLine();
 
+        if(inputYear != null) {
+            TreeMap<String, Model> mapByYear = getModelMapByYear(modelMap, inputYear);
+            String endYear;
+            for(String s : mapByYear.keySet()) {
+                endYear = mapByYear.get(s).getEnd_year();
+                if(endYear == "null") {
+                    endYear = "nadal";
+                }
 
+                System.out.println(mapByYear.get(s).getName() + ": " + mapByYear.get(s).getStart_year() + " - " + endYear);
+            }
+        }
 
         /*if(odczyt.nextLine().toLowerCase().equals("lista")) {
             for (String newString : modelMap.keySet()) {
