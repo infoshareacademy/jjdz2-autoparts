@@ -47,37 +47,11 @@ public class MainApplication {
         return brand;
     }
 
-/*    private static TreeMap<String,Model> getModelMap(String link) {
+    private static TreeMap<String,Model> getModelMap(String link) throws IOException {
 
-    }*/
+        JSONObject jsonBrand = jrd.readJsonFromUrl(LINK_MAIN + link);
 
-
-    public static void main(String[] args) throws IOException, JSONException {
-
-
-
-        TreeMap<String,Brand> brandMap = getBrandMap(LINK_MAIN+LINK_BRAND);
-
-        //System.out.println(brandMap.keySet());
-
-
-        System.out.println("Podaj markę:");
-        Scanner odczyt = new Scanner(System.in);
-
-        String inputName = odczyt.nextLine();
-
-/*        if(brandMap.containsKey(inputName.toUpperCase())) {
-            brand = brandMap.get(inputName.toUpperCase());
-        } else {
-            System.out.println("Podałeś złą markę!");
-            System.exit(1);
-        }*/
-
-        Brand brand = getBrand(inputName,brandMap);
-
-        JSONObject jsonBrand = jrd.readJsonFromUrl(LINK_MAIN + brand.getLink());
-
-        TreeMap<String,Model> modelMap = new TreeMap<>();
+        TreeMap<String, Model> modelMap = new TreeMap<>();
 
         JSONArray jArr = jsonBrand.getJSONArray("data");
 
@@ -90,21 +64,41 @@ public class MainApplication {
                         jsonObject.getString("link")));
             }
         }
+        return modelMap;
+    }
+
+
+    public static void main(String[] args) throws IOException, JSONException {
+
+
+
+        TreeMap<String,Brand> brandMap = getBrandMap(LINK_MAIN + LINK_BRAND);
+
+        //System.out.println(brandMap.keySet());
+
+
+        System.out.println("Podaj markę:");
+        Scanner odczyt = new Scanner(System.in);
+
+        String inputName = odczyt.nextLine();
+
+        Brand brand = getBrand(inputName,brandMap);
+
+        TreeMap<String,Model> modelMap = getModelMap(brand.getLink());
 
         System.out.println("Wybierz model:");
-        Set<String> keyString = modelMap.keySet();
 
-        for(String newString : keyString) {
-            System.out.println(modelMap.get(newString).getName());
+        for(String newString : modelMap.keySet()) {
+            System.out.println(modelMap.get(newString).getName() + "/n");
         }
-            String modelName = odczyt.nextLine();
+        /*    String modelName = odczyt.nextLine();
 
         if(brandMap.containsKey(inputName.toUpperCase())) {
             brand = brandMap.get(inputName.toUpperCase());
         } else {
             System.out.println("Podałeś zły model!");
             System.exit(1);
-        }
+        }*/
 
 
 
