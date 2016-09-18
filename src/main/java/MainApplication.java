@@ -42,7 +42,7 @@ public class MainApplication {
            brand = brandMap.get(inputName.toUpperCase());
         } else {
             System.out.println("Podałeś złą markę!");
-            System.exit(1);
+            return new Brand();
         }
         return brand;
     }
@@ -74,22 +74,24 @@ public class MainApplication {
 
         TreeMap<String,Brand> brandMap = getBrandMap(LINK_MAIN + LINK_BRAND);
 
-        //System.out.println(brandMap.keySet());
-
-
-        System.out.println("Podaj markę:");
         Scanner odczyt = new Scanner(System.in);
+        Brand brand = new Brand();
 
-        String inputName = odczyt.nextLine();
+        do {
+            System.out.println("Podaj markę:");
+            String inputName = odczyt.nextLine();
 
-        Brand brand = getBrand(inputName,brandMap);
+            brand = getBrand(inputName, brandMap);
+        }  while(brand.getName() == null);
 
         TreeMap<String,Model> modelMap = getModelMap(brand.getLink());
 
-        System.out.println("Wybierz model:");
+        System.out.println("Wybierz nazwę modelu lub wpisz \"lista\", aby wypisać listę modeli :");
 
-        for(String newString : modelMap.keySet()) {
-            System.out.println(modelMap.get(newString).getName() + "/n");
+        if(odczyt.nextLine().toLowerCase().equals("lista")) {
+            for (String newString : modelMap.keySet()) {
+                System.out.println(modelMap.get(newString).getName());
+            }
         }
         /*    String modelName = odczyt.nextLine();
 

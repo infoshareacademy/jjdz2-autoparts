@@ -1,0 +1,15 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "title": "Czy gasnie ci silnik",
+      "options": [
+        {
+          "id": 1,
+          "label": "TAK",
+          "parts": ["Engine"]
+        }
+      ]
+    }
+  ]
+}

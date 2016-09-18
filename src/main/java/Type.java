@@ -45,9 +45,6 @@ public class Type {
         this.name = name;
         this.end_year = end_year;
         this.id = id;
-
-
-
     }
 
 
