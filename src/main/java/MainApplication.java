@@ -59,12 +59,27 @@ public class MainApplication {
             JSONObject jsonObject = jArr.getJSONObject(i);
 
             if (jsonObject != null) {
-                modelMap.put(jsonObject.getString("name"),new Model(jsonObject.getString("id"),jsonObject.getString("name"),jsonObject.get("end_year").toString(),
+                modelMap.put(jsonObject.getString("start_year"),new Model(jsonObject.getString("id"),jsonObject.getString("name"),jsonObject.get("end_year").toString(),
                         jsonObject.get("end_month").toString(),jsonObject.getString("start_year"),jsonObject.getString("start_month"),jsonObject.getString("vehicle_group"),
                         jsonObject.getString("link")));
             }
         }
         return modelMap;
+    }
+
+    private static TreeMap<String,Model> getModelMapByYear(TreeMap<String,Model> modelMap, String year) {
+        TreeMap<String,Model> modelMapByYear = new TreeMap<>();
+        Integer yearInt = Integer.parseInt(year);
+
+        for(String s : modelMap.keySet()) {
+            Integer startYear = Integer.parseInt(modelMap.get(s).getStart_year());
+            Integer endYear = Integer.parseInt(modelMap.get(s).getEnd_year());
+
+            if(yearInt >= startYear && yearInt <= endYear) {
+                modelMapByYear.put(modelMap.get(s).getId(),modelMap.get(s));
+            }
+        }
+        return modelMapByYear;
     }
 
 
@@ -86,13 +101,16 @@ public class MainApplication {
 
         TreeMap<String,Model> modelMap = getModelMap(brand.getLink());
 
-        System.out.println("Wybierz nazwę modelu lub wpisz \"lista\", aby wypisać listę modeli :");
+        System.out.println("Podaj rok produkcji:");
 
-        if(odczyt.nextLine().toLowerCase().equals("lista")) {
+
+
+
+        /*if(odczyt.nextLine().toLowerCase().equals("lista")) {
             for (String newString : modelMap.keySet()) {
                 System.out.println(modelMap.get(newString).getName());
             }
-        }
+        }*/
         /*    String modelName = odczyt.nextLine();
 
         if(brandMap.containsKey(inputName.toUpperCase())) {
