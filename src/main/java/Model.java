@@ -1,3 +1,5 @@
+import java.util.Optional;
+
 /**
  * Created by pwieczorek on 05.09.16.
  */
@@ -5,7 +7,7 @@ public class Model {
 
     private String id;
     private String name;
-    private String end_year;
+    private Optional<String> end_year;
     private String end_month;
     private String start_year;
     private String start_month;
@@ -20,7 +22,7 @@ public class Model {
         return name;
     }
 
-    public String getEnd_year() {
+    public Optional<String> getEnd_year() {
         return end_year;
     }
 
@@ -44,7 +46,7 @@ public class Model {
         return link;
     }
 
-    public Model(String id, String name, String end_year, String end_month, String start_year, String start_month, String vehicle_group, String link) {
+    public Model(String id, String name, Optional<String> end_year, String end_month, String start_year, String start_month, String vehicle_group, String link) {
         if(id != null) {
             this.id = id;
         }

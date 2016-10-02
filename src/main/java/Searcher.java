@@ -62,11 +62,19 @@ public class Searcher {
                 JSONObject jsonObject = jArr.getJSONObject(i);
 
                 if (jsonObject != null) {
-                    modelMap.put(jsonObject.get("start_year").toString(), new Model(jsonObject.getString("id"),
-                            jsonObject.getString("name"), jsonObject.get("end_year").toString(),
-                            jsonObject.get("end_month").toString(), jsonObject.get("start_year").toString(),
-                            jsonObject.get("start_month").toString(), jsonObject.getString("vehicle_group"),
-                            jsonObject.getString("link")));
+                    modelMap.put(
+                            jsonObject.get("start_year").toString(),
+                            new Model(
+                                    jsonObject.getString("id"),
+                                    jsonObject.getString("name"),
+                                    Optional.ofNullable(jsonObject.getString("end_year")),
+                                    jsonObject.get("end_month").toString(),
+                                    jsonObject.get("start_year").toString(),
+                                    jsonObject.get("start_month").toString(),
+                                    jsonObject.getString("vehicle_group"),
+                                    jsonObject.getString("link")
+                            )
+                    );
                 }
             }
         } else
@@ -88,14 +96,13 @@ public class Searcher {
         }
 
         for(String s : modelMap.keySet()) {
-            Integer startYear = Integer.parseInt(modelMap.get(s).getStart_year());
-            Integer endYear=calendar.get(Calendar.YEAR);
-
-            if(modelMap.get(s).getEnd_year() != "null") {
-                endYear = Integer.parseInt(modelMap.get(s).getEnd_year());
-            }
+            Model model = modelMap.get(s);
+            Integer startYear = Integer.parseInt(model.getStart_year());
+            Integer endYear = model.getEnd_year()
+                    .map(y -> Integer.parseInt(y))
+                    .orElse(calendar.get(Calendar.YEAR));
             if(yearInt >= startYear && yearInt <= endYear) {
-                modelMapByYear.put(modelMap.get(s).getId(),modelMap.get(s));
+                modelMapByYear.put(model.getId(), model);
             }
         }
         return modelMapByYear;
@@ -138,11 +145,11 @@ public class Searcher {
 
         if(inputYear != null) {
             TreeMap<String, Model> modelMapByYear = getModelMapByYear(modelMap, inputYear);
-            String endYear;
+            Optional<String> endYear;
             for(String s : modelMapByYear.keySet()) {
                 endYear = modelMapByYear.get(s).getEnd_year();
-                if(endYear == "null") {
-                    endYear = "bd.";
+                if(!endYear.isPresent()) {
+                    endYear = Optional.of("bd.");
                 }
 
                 System.out.println(modelMapByYear.get(s).getName() + ": " + modelMapByYear.get(s).getStart_year() + " - " + endYear);
