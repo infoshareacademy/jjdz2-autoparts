@@ -6,11 +6,11 @@ public class ConsoleMenu {
 
         // Display menu graphics
         System.out.println("============================");
-        System.out.println("|   MENU SELECTION DEMO    |");
+        System.out.println("|       MENU AUTOPARTS     |");
         System.out.println("============================");
         System.out.println("| Options:                 |");
-        System.out.println("|        1. Option 1       |");
-        System.out.println("|        2. Option 2       |");
+        System.out.println("|        1. Baza RU        |");
+        System.out.println("|        2. Atena          |");
         System.out.println("|        3. Exit           |");
         System.out.println("============================");
         swValue = Keyin.inInt(" Select option: ");
@@ -142,8 +142,7 @@ class Keyin {
             }
 
             catch (NumberFormatException e) {
-                System.out
-                        .println("Invalid input. Not a floating point number");
+                System.out.println("Invalid input. Not a floating point number");
             }
         }
     }
