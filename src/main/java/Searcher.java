@@ -67,7 +67,7 @@ public class Searcher {
                             new Model(
                                     jsonObject.getString("id"),
                                     jsonObject.getString("name"),
-                                    Optional.ofNullable(jsonObject.getString("end_year")),
+                                    Optional.ofNullable(jsonObject.get("end_year")).map(s -> s.toString()),
                                     jsonObject.get("end_month").toString(),
                                     jsonObject.get("start_year").toString(),
                                     jsonObject.get("start_month").toString(),
