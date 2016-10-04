@@ -1,3 +1,7 @@
+import org.json.JSONException;
+
+import java.io.IOException;
+
 public class ConsoleMenu {
 
     public static void main(String[] args) {
@@ -18,7 +22,14 @@ public class ConsoleMenu {
         // Switch construct
         switch (swValue) {
             case 1:
-                System.out.println("Option 1 selected");
+                //System.out.println("Option 1 selected");
+                try {
+                    new Searcher().search();
+                } catch (IOException e) {
+                    System.out.println("Błąd odczytu!");
+                } catch (JSONException jE) {
+                    System.out.println("Błędny plik JSON1");
+                }
                 break;
             case 2:
                 System.out.println("Option 2 selected");
