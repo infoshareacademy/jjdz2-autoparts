@@ -70,9 +70,9 @@ public class Searcher {
                                     jsonObject.getString("id"),
                                     jsonObject.getString("name"),
                                     jsonObject.optString("end_year",String.valueOf(calendar.get(Calendar.YEAR))),
-                                    jsonObject.get("end_month").toString(),
-                                    jsonObject.get("start_year").toString(),
-                                    jsonObject.get("start_month").toString(),
+                                    jsonObject.optString("end_month","1"),
+                                    jsonObject.optString("start_year","1900"),
+                                    jsonObject.optString("start_month","1"),
                                     jsonObject.getString("vehicle_group"),
                                     jsonObject.getString("link")
                             )
