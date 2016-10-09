@@ -160,14 +160,22 @@ public class Searcher {
 
         if(inputYear != null) {
             modelMap = getModelMapByYear(modelMap, inputYear);
-            for(String s : modelMap.keySet()) {
-
-
-                System.out.println(modelMap.get(s).getName());
-            }
         }
 
+        if(modelMap.keySet().isEmpty()) {
+            System.out.println("Brak danych w bazie!");
+            System.exit(0);
+        }
 
+        if(modelMap.keySet().size()>1)
+        {
+            Integer i=1;
+            System.out.println("\nWybierz jeden z podanych modeli:");
+            for(String s : modelMap.keySet()) {
+                System.out.println(i.toString()+". "+modelMap.get(s).getName());
+                i++;
+            }
+        }
 
 
 
