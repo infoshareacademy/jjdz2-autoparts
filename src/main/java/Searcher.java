@@ -167,13 +167,28 @@ public class Searcher {
             System.exit(0);
         }
 
+        TreeMap<String,Model> modelMapNumber = new TreeMap<>();
+
         if(modelMap.keySet().size()>1)
         {
             Integer i=1;
             System.out.println("\nWybierz jeden z podanych modeli:");
             for(String s : modelMap.keySet()) {
                 System.out.println(i.toString()+". "+modelMap.get(s).getName());
+                modelMapNumber.put(i.toString(),modelMap.get(s));
                 i++;
+            }
+            String inputKlawisz = odczyt.nextLine();
+
+            while(!modelMapNumber.keySet().contains(inputKlawisz))
+            {
+                Integer j=1;
+                System.out.println("Wybrałeś zły model! Wybierz jeden z podanych modeli:");
+                for(String s : modelMap.keySet()) {
+                    System.out.println(j.toString()+". "+modelMap.get(s).getName());
+                    j++;
+                }
+                inputKlawisz = odczyt.nextLine();
             }
         }
 
