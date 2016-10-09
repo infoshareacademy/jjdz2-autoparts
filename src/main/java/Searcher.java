@@ -159,31 +159,16 @@ public class Searcher {
         String inputYear = odczyt.nextLine();
 
         if(inputYear != null) {
-            TreeMap<String, Model> modelMapByYear = getModelMapByYear(modelMap, inputYear);
-            String endYear;
-            for(String s : modelMapByYear.keySet()) {
-                endYear = modelMapByYear.get(s).getEnd_year();
-                if(endYear.equals(String.valueOf(calendar.get(Calendar.YEAR)))) {
-                    endYear ="bd.";
-                }
+            modelMap = getModelMapByYear(modelMap, inputYear);
+            for(String s : modelMap.keySet()) {
 
-                System.out.println(modelMapByYear.get(s).getName() + ": " + modelMapByYear.get(s).getStart_year() + " - " + endYear);
+
+                System.out.println(modelMap.get(s).getName());
             }
         }
 
-        /*if(odczyt.nextLine().toLowerCase().equals("lista")) {
-            for (String newString : modelMap.keySet()) {
-                System.out.println(modelMap.get(newString).getName());
-            }
-        }*/
-        /*    String modelName = odczyt.nextLine();
 
-        if(brandMap.containsKey(inputName.toUpperCase())) {
-            brand = brandMap.get(inputName.toUpperCase());
-        } else {
-            System.out.println("Podałeś zły model!");
-            System.exit(1);
-        }*/
+
 
 
 
