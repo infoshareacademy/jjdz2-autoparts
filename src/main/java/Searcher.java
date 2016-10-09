@@ -7,6 +7,9 @@ import java.util.*;
 import java.util.Calendar;
 import java.util.regex.Pattern;
 
+import java.lang.*;
+import java.lang.String;
+
 /**
  * Created by pwieczorek on 29.08.16.
  */
@@ -60,14 +63,13 @@ public class Searcher {
         if(jArr.length() !=0) {
             for (int i = 0; i < jArr.length(); i++) {
                 JSONObject jsonObject = jArr.getJSONObject(i);
-
                 if (jsonObject != null) {
                     modelMap.put(
                             jsonObject.get("start_year").toString(),
                             new Model(
                                     jsonObject.getString("id"),
                                     jsonObject.getString("name"),
-                                    Optional.ofNullable(jsonObject.get("end_year")).map(s -> s.toString()),
+                                    jsonObject.optString("end_year",String.valueOf(calendar.get(Calendar.YEAR))),
                                     jsonObject.get("end_month").toString(),
                                     jsonObject.get("start_year").toString(),
                                     jsonObject.get("start_month").toString(),
@@ -98,9 +100,10 @@ public class Searcher {
         for(String s : modelMap.keySet()) {
             Model model = modelMap.get(s);
             Integer startYear = Integer.parseInt(model.getStart_year());
-            Integer endYear = model.getEnd_year()
-                    .map(y -> Integer.parseInt(y))
-                    .orElse(calendar.get(Calendar.YEAR));
+            Integer endYear =0;
+                endYear = Integer.parseInt(model.getEnd_year());
+
+
             if(yearInt >= startYear && yearInt <= endYear) {
                 modelMapByYear.put(model.getId(), model);
             }
@@ -122,7 +125,7 @@ public class Searcher {
     }
 
 
-    public void search(String[] args) throws IOException, JSONException {
+    public void search() throws IOException, JSONException {
 
 
 
@@ -157,11 +160,11 @@ public class Searcher {
 
         if(inputYear != null) {
             TreeMap<String, Model> modelMapByYear = getModelMapByYear(modelMap, inputYear);
-            Optional<String> endYear;
+            String endYear;
             for(String s : modelMapByYear.keySet()) {
                 endYear = modelMapByYear.get(s).getEnd_year();
-                if(!endYear.isPresent()) {
-                    endYear = Optional.of("bd.");
+                if(endYear.equals(String.valueOf(calendar.get(Calendar.YEAR)))) {
+                    endYear ="bd.";
                 }
 
                 System.out.println(modelMapByYear.get(s).getName() + ": " + modelMapByYear.get(s).getStart_year() + " - " + endYear);
@@ -188,7 +191,5 @@ public class Searcher {
 
     }
 
-    public static void main(String[] args) throws IOException {
-        new Searcher().search(args);
-    }
+
 }
