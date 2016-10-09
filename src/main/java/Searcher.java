@@ -110,10 +110,12 @@ public class Searcher {
 
     private TreeMap<String,Model> getModelMapByName(TreeMap<String,Model> modelMap, String name) {
         TreeMap<String,Model> modelMapByName = new TreeMap<>();
-        Pattern pattern = Pattern.compile(name.toUpperCase());
 
-        for(String s : modelMap.keySet()) {
 
+        for(Model m : modelMap.values()) {
+            if(m.getName().contains(name.toUpperCase())) {
+                modelMapByName.put(m.getName().toUpperCase(),m);
+            }
         }
 
         return modelMapByName;
@@ -131,7 +133,7 @@ public class Searcher {
 
 
         do {
-            System.out.println("Podaj markę:");
+            System.out.println("\nPodaj markę:");
             String inputName = odczyt.nextLine();
 
             brand = getBrand(inputName, brandMap);
@@ -139,7 +141,17 @@ public class Searcher {
 
         TreeMap<String,Model> modelMap = getModelMap(brand.getLink());
 
-        System.out.println("Podaj rok produkcji:");
+        System.out.println("\nPodaj model:");
+        String modelName = odczyt.nextLine();
+
+        modelMap = getModelMapByName(modelMap,modelName);
+
+        if(modelMap.keySet().isEmpty()) {
+            System.out.println("Brak podanych modeli!");
+            System.exit(1);
+        }
+
+        System.out.println("\nPodaj rok produkcji:");
 
         String inputYear = odczyt.nextLine();
 
