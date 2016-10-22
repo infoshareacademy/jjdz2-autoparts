@@ -65,7 +65,7 @@ public class Searcher {
                 JSONObject jsonObject = jArr.getJSONObject(i);
                 if (jsonObject != null) {
                     modelMap.put(
-                            jsonObject.get("start_year").toString(),
+                            jsonObject.get("id").toString(),
                             new Model(
                                     jsonObject.getString("id"),
                                     jsonObject.getString("name"),
@@ -116,6 +116,7 @@ public class Searcher {
 
 
         for(Model m : modelMap.values()) {
+
             if(m.getName().contains(name.toUpperCase())) {
                 modelMapByName.put(m.getName().toUpperCase(),m);
             }
@@ -123,6 +124,16 @@ public class Searcher {
 
         return modelMapByName;
     }
+
+    private JSONObject getTypeJSON(String link) throws IOException {
+        return jrd.readJsonFromUrl(LINK_MAIN+link);
+    }
+
+    private JSONArray getTypeArray(JSONObject TypeJSON, String arrayName) {
+        return TypeJSON.optJSONArray(arrayName);
+    }
+
+
 
 
     public void search() throws IOException, JSONException {
@@ -200,12 +211,33 @@ public class Searcher {
             wybranyModel=modelMap.firstEntry().getValue();
         }
 
+        JSONObject typeJSON = getTypeJSON(wybranyModel.getLink());
+
+        JSONArray typeArray = getTypeArray(typeJSON,"data");
+
+        List<String> fuelList = new ArrayList<>();
+
+        for(int i=0; i<typeArray.length(); i++) {
+            if(!fuelList.contains(typeArray.optJSONObject(i).optString("engine_txt"))) {
+                fuelList.add(typeArray.getJSONObject(i).optString("engine_txt"));
+            }
+        }
+
+        System.out.println("\nWybierz rodzaj silnika:");
+
+        for(Integer i=0; i<fuelList.size(); i++) {
+            Integer j=i+1;
+            System.out.println(j.toString()+". "+fuelList.get(i));
+        }
+
+        do {
+            inputKlawisz=odczyt.nextLine();
+        } while (inputKlawisz == null);
 
 
+        Integer j=new Integer(inputKlawisz);
 
-
-
-
+        
 
     }
 
