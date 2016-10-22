@@ -234,7 +234,6 @@ public class Searcher {
             inputKlawisz=odczyt.nextLine();
         } while (inputKlawisz == null);
 
-
         Integer j=new Integer(inputKlawisz);
 
         
