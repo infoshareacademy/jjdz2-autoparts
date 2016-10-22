@@ -215,28 +215,57 @@ public class Searcher {
 
         JSONArray typeArray = getTypeArray(typeJSON,"data");
 
-        List<String> fuelList = new ArrayList<>();
+        List<String> engineList = new ArrayList<>();
 
         for(int i=0; i<typeArray.length(); i++) {
-            if(!fuelList.contains(typeArray.optJSONObject(i).optString("engine_txt"))) {
-                fuelList.add(typeArray.getJSONObject(i).optString("engine_txt"));
+            if(!engineList.contains(typeArray.optJSONObject(i).getString("engine_txt"))) {
+                engineList.add(typeArray.getJSONObject(i).getString("engine_txt"));
             }
         }
 
         System.out.println("\nWybierz rodzaj silnika:");
 
-        for(Integer i=0; i<fuelList.size(); i++) {
+        for(Integer i=0; i<engineList.size(); i++) {
             Integer j=i+1;
-            System.out.println(j.toString()+". "+fuelList.get(i));
+            System.out.println(j.toString()+". "+engineList.get(i));
         }
 
         do {
             inputKlawisz=odczyt.nextLine();
         } while (inputKlawisz == null);
 
-        Integer j=new Integer(inputKlawisz);
+        Integer k=new Integer(inputKlawisz);
 
-        
+        String engineText = engineList.get(k-1);
+
+        System.out.println(engineText);
+
+        JSONArray nameArray = new JSONArray();
+
+        for(int i=0; i<typeArray.length(); i++) {
+            if(engineText.equals(typeArray.getJSONObject(i).getString("engine_txt"))) {
+                nameArray.put(typeArray.getJSONObject(i));
+            }
+        }
+
+        List<String> nameList = new ArrayList<>();
+
+        for(int i=0; i<nameArray.length(); i++) {
+            if(!nameList.contains(nameArray.getJSONObject(i).getString("name"))) {
+                nameList.add(nameArray.getJSONObject(i).getString("name"));
+            }
+        }
+
+        System.out.println("\nWybierz nazwę silnika:");
+
+        for(Integer i=0; i<nameList.size(); i++) {
+            Integer j=i+1;
+            System.out.println(j.toString()+". "+nameList.get(i));
+        }
+
+        do {
+            inputKlawisz=odczyt.nextLine();
+        } while (inputKlawisz == null);
 
     }
 
