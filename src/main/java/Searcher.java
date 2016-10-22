@@ -139,6 +139,7 @@ public class Searcher {
     public void search() throws IOException, JSONException {
 
 
+        String output = new String();
 
         TreeMap<String,Brand> brandMap = getBrandMap(LINK_MAIN + LINK_BRAND);
 
@@ -151,6 +152,9 @@ public class Searcher {
             String inputName = odczyt.nextLine();
 
             brand = getBrand(inputName, brandMap);
+
+            output = inputName.toUpperCase() + " ";
+
         }  while(brand.getName() == null);
 
         TreeMap<String,Model> modelMap = getModelMap(brand.getLink());
@@ -211,6 +215,8 @@ public class Searcher {
             wybranyModel=modelMap.firstEntry().getValue();
         }
 
+        output += wybranyModel.getName() + " ";
+
         JSONObject typeJSON = getTypeJSON(wybranyModel.getLink());
 
         JSONArray typeArray = getTypeArray(typeJSON,"data");
@@ -238,12 +244,14 @@ public class Searcher {
 
         String engineText = engineList.get(k-1);
 
-        System.out.println(engineText);
-
         JSONArray nameArray = new JSONArray();
 
+
+        Integer rokProdukcji = new Integer(inputYear);
+
         for(int i=0; i<typeArray.length(); i++) {
-            if(engineText.equals(typeArray.getJSONObject(i).getString("engine_txt"))) {
+            if(engineText.equals(typeArray.getJSONObject(i).getString("engine_txt"))
+                    && rokProdukcji >= new Integer (typeArray.getJSONObject(i).getString("start_year"))) {
                 nameArray.put(typeArray.getJSONObject(i));
             }
         }
@@ -266,6 +274,24 @@ public class Searcher {
         do {
             inputKlawisz=odczyt.nextLine();
         } while (inputKlawisz == null);
+
+        Integer l = new Integer(inputKlawisz);
+
+        String name = nameList.get(l-1);
+
+        output += name + " ";
+
+        JSONArray finalArray = new JSONArray();
+
+        for(int i=0; i<nameArray.length(); i++) {
+            if(name.equals(nameArray.getJSONObject(i).getString("name"))) {
+                finalArray.put(nameArray.getJSONObject(i));
+            }
+        }
+
+
+
+        System.out.println(output);
 
     }
 
