@@ -290,8 +290,7 @@ public class Searcher {
         }
 
 
-
-        System.out.println(output);
+        System.out.println("\nWybrany samochód to:\n"+output);
 
     }
 
