@@ -1,13 +1,12 @@
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.Calendar;
 
 public class Atena {
 
+    public static final int SESSION_ERROR = -4;
+    public static final int CODE_ERROR = -2;
     private final String KOD_DO_SESJI = "https://aztec.atena.pl/PWM2/rest/aztec/getbysession?sessionKey=";
     private final String KOD_KLIENTA = "&userKey=qY2?0Pw!";
 
@@ -30,10 +29,10 @@ public class Atena {
     private void jsonReader(JSONObject jObject) {
         JSONObject jsonObject = jObject.getJSONObject("Dane");
         Integer errorNr = jsonObject.getInt("Error");
-        if(errorNr==-4) {
+        if(errorNr== SESSION_ERROR) {
             System.out.println("Podałeś zły klucz sesji!");
             System.exit(1);
-        }else if(errorNr==-2){
+        }else if(errorNr==CODE_ERROR){
             System.out.println("Podałeś zły kod użytkownika!");
             System.exit(1);
         }else {
