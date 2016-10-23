@@ -12,12 +12,12 @@ public class ConsoleMenu {
         System.out.println("============================");
         System.out.println("|       MENU AUTOPARTS     |");
         System.out.println("============================");
-        System.out.println("| Options:                 |");
+        System.out.println("| Opcje:                   |");
         System.out.println("|        1. Baza RU        |");
         System.out.println("|        2. Atena          |");
         System.out.println("|        3. Exit           |");
         System.out.println("============================");
-        swValue = Keyin.inInt(" Select option: ");
+        swValue = Keyin.inInt(" Wybierz opcję: ");
 
         // Switch construct
         switch (swValue) {
@@ -32,10 +32,15 @@ public class ConsoleMenu {
                 }
                 break;
             case 2:
-                System.out.println("Option 2 selected");
+                try {
+                    new Atena().handleAtenaAztecReader();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("Błąd odczytu!");
+                }
                 break;
             case 3:
-                System.out.println("Exit selected");
+                System.exit(0);
                 break;
             default:
                 System.out.println("Invalid selection");
